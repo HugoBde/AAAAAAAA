@@ -49,3 +49,8 @@ pub async fn get_article_by_id(id: i32) -> tokio_postgres::Row {
         .await
         .unwrap()
 }
+
+pub async fn get_all_articles() -> Vec<tokio_postgres::Row> {
+
+    DB_CLIENT.get().await.query("SELECT title, update_date, id FROM blog_articles_testing;", &[]).await.unwrap()
+}
