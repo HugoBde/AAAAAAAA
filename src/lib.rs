@@ -2,3 +2,4 @@
 
 pub mod db;
 pub mod routes;
+pub mod templating;
