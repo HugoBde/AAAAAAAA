@@ -16,3 +16,4 @@ I called this project `AAAAAAAA` so that I never forget why I picked Rust. So th
 - [X] Refactor code to operate with a single DB connection
 - [ ] Build blog homepagege
 - [ ] Implement cache functionality to limit the number of DB queries
+- [ ] Implement graceful shutdown
