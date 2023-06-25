@@ -7,7 +7,7 @@ COPY src src
 COPY templates templates
 COPY Cargo.* .
 RUN apk add --no-cache musl-dev
-RUN cargo install --target x86_64-unknown-linux-musl --path .
+RUN cargo install --target $(uname -m)-unknown-linux-musl --path .
 
 # App image
 FROM alpine
