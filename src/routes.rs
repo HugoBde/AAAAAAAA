@@ -1,26 +1,63 @@
+use askama::Template;
 use axum::extract::Path;
 use axum::http::header;
 use axum::response::IntoResponse;
-use sailfish::TemplateOnce;
 
-use crate::templating::{BlogArticleTemplate, BlogHomePageTemplate};
+use crate::templating::{BlogArticleInfo, BlogHomePageTemplate};
 
 pub async fn home_page() -> impl IntoResponse {
 
     let ctx = BlogHomePageTemplate {
         articles: vec![
-            BlogArticleTemplate {
-                title:    String::from("Article 1"),
-                pub_date: String::from("Jun 25th 2023"),
+            BlogArticleInfo {
+                id:       1,
+                title:    String::from("Powering a contact form with Go and Docker"),
+                pub_date: String::from("June 22nd 2023"),
             },
-            BlogArticleTemplate {
-                title:    String::from("Article 2"),
-                pub_date: String::from("Jun 26th 2023"),
+            BlogArticleInfo {
+                id:       2,
+                title:    String::from("How to over-engineer your portfolio website"),
+                pub_date: String::from("July 5th 2023"),
+            },
+            BlogArticleInfo {
+                id:       3,
+                title:    String::from("Boosting Website Interactivity: Implementing Real-Time Chat with Go and Docker"),
+                pub_date: String::from("August 8th, 2023"),
+            },
+            BlogArticleInfo {
+                id:       4,
+                title:    String::from("Mastering the Art of Complexity: Over-Engineering Your E-Commerce Website"),
+                pub_date: String::from("August 8th, 2023"),
+            },
+            BlogArticleInfo {
+                id:       5,
+                title:    String::from("Building Scalable Microservices Architecture with Go and Docker"),
+                pub_date: String::from("August 8th, 2023"),
+            },
+            BlogArticleInfo {
+                id:       6,
+                title:    String::from("The Magic of Go: Unleashing Concurrent Processing in Your Web Applications"),
+                pub_date: String::from("August 8th, 2023"),
+            },
+            BlogArticleInfo {
+                id:       7,
+                title:    String::from("Elevating User Experience: Crafting Responsive Web Designs with Over-Engineering Techniques"),
+                pub_date: String::from("August 8th, 2023"),
+            },
+            BlogArticleInfo {
+                id:       8,
+                title:    String::from("Unleashing the Power of Go and Docker: Developing a High-Performance API Backend"),
+                pub_date: String::from("August 8th, 2023"),
+            },
+            BlogArticleInfo {
+                id:       9,
+                title:    String::from("Exploring Cutting-Edge Web Technologies: Over-Engineered Frontend Frameworks for Your Portfolio Website"),
+                pub_date: String::from("August 8th, 2023"),
             },
         ],
     };
 
-    ([(header::CONTENT_TYPE, "text/html")], ctx.render_once().unwrap())
+    ([(header::CONTENT_TYPE, "text/html")], ctx.render().unwrap())
 }
 
 pub async fn article_page(Path(blog_id): Path<i32>) -> impl IntoResponse {

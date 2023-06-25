@@ -1,13 +1,14 @@
-use sailfish::TemplateOnce;
+use askama::Template;
 
-pub struct BlogArticleTemplate {
+pub struct BlogArticleInfo {
+    pub id:       i32,
     pub title:    String,
     pub pub_date: String,
 }
 
-#[derive(TemplateOnce)]
-#[template(path = "homepage.stpl")]
+#[derive(Template)]
+#[template(path = "homepage.html")]
 
 pub struct BlogHomePageTemplate {
-    pub articles: Vec<BlogArticleTemplate>,
+    pub articles: Vec<BlogArticleInfo>,
 }
