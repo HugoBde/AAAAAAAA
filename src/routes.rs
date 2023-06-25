@@ -1,9 +1,26 @@
 use axum::extract::Path;
+use axum::http::header;
 use axum::response::IntoResponse;
+use sailfish::TemplateOnce;
 
-pub async fn home_page() -> String {
+use crate::templating::{BlogArticleTemplate, BlogHomePageTemplate};
 
-    String::from("AAAAAAAA")
+pub async fn home_page() -> impl IntoResponse {
+
+    let ctx = BlogHomePageTemplate {
+        articles: vec![
+            BlogArticleTemplate {
+                title:    String::from("Article 1"),
+                pub_date: String::from("Jun 25th 2023"),
+            },
+            BlogArticleTemplate {
+                title:    String::from("Article 2"),
+                pub_date: String::from("Jun 26th 2023"),
+            },
+        ],
+    };
+
+    ([(header::CONTENT_TYPE, "text/html")], ctx.render_once().unwrap())
 }
 
 pub async fn article_page(Path(blog_id): Path<i32>) -> impl IntoResponse {
