@@ -30,6 +30,7 @@ pub async fn article_page(Path(blog_id): Path<i32>) -> impl IntoResponse {
 
     // Extract the path and prepend /blog to it
     let mut path = CONFIG.get("general", "articles_dir").unwrap();
+    path.push('/');
     path.push_str(row.try_get("path").unwrap());
 
     let response_body = std::fs::read(path).unwrap();

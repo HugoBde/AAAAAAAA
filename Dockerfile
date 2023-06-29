@@ -27,4 +27,4 @@ FROM alpine
 WORKDIR /AAAAAAAA
 COPY config.ini .
 COPY --from=BUILDER /usr/local/cargo/bin/AAAAAAAA /usr/local/bin/AAAAAAAA
-CMD ["AAAAAAAA"]
+CMD ["AAAAAAAA", "config.ini"]
