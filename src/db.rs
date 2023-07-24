@@ -9,11 +9,11 @@ lazy_static! {
         let mut db_config = tokio_postgres::Config::new();
 
         db_config
-            .host(&CONFIG.get("database", "host").unwrap())
-            .port(CONFIG.getuint("database", "port").unwrap().unwrap() as u16)
-            .dbname(&CONFIG.get("database", "name").unwrap())
-            .user(&CONFIG.get("database", "user").unwrap())
-            .password(&CONFIG.get("database", "password").unwrap());
+            .host(&CONFIG.get("database", "host").unwrap_or(String::from("localhost")).as_str())
+            .port(CONFIG.getuint("database", "port").unwrap().unwrap_or(5432) as u16)
+            .user(&CONFIG.get("database", "user").ok_or("Missing \"user\" parameter in \"database\" section").unwrap().as_str())
+            .dbname(&CONFIG.get("database", "name").ok_or("Missing \"dbname\" parameter in \"database\" section").unwrap().as_str())
+            .password(&CONFIG.get("database", "password").ok_or("Missing \"password\" parameter in \"database\" section").unwrap().as_str());
 
         // Connect !!!
         let (db_client, db_conn) = db_config.connect(tokio_postgres::NoTls).await.unwrap();
@@ -34,10 +34,7 @@ pub async fn get_article_by_id(id: i32) -> tokio_postgres::Row {
     DB_CLIENT
         .get()
         .await
-        .query_one(
-            "SELECT path FROM blog_articles_testing WHERE id=$1;",
-            &[&id],
-        )
+        .query_one("SELECT path FROM blog_articles WHERE id=$1;", &[&id])
         .await
         .unwrap()
 }
@@ -46,10 +43,7 @@ pub async fn get_all_articles() -> Vec<tokio_postgres::Row> {
     DB_CLIENT
         .get()
         .await
-        .query(
-            "SELECT title, update_date, id FROM blog_articles_testing;",
-            &[],
-        )
+        .query("SELECT title, update_date, id FROM blog_articles;", &[])
         .await
         .unwrap()
 }
