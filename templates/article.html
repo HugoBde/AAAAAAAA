@@ -30,7 +30,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/dockerfile.min.js"></script>
 
     <!-- MISC-->
-    <title>{{ article.title }}</title>
+    <title>{{ title }}</title>
     <meta name="description" content="My blog about all things programming, DevOps">
 </head>
 
@@ -59,9 +59,9 @@
     <!-- MAIN CONTENT -->
     <main>
         <div>
-            <h1 class="article-title">{{ article.title }}</h1>
-            <span class=".article-infos">{{ article.update_date }}</span>   
-            {{ article.content }}
+            <h1 class="article-title">{{ title }}</h1>
+            <span class="article-infos">Last updated: {{ update_date }}</span>
+            {{ content }}
         </div>
     </main>
 </body>

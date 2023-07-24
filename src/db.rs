@@ -1,6 +1,7 @@
-use crate::config::CONFIG;
 use async_once::AsyncOnce;
 use lazy_static::lazy_static;
+
+use crate::config::CONFIG;
 
 lazy_static! {
     pub static ref DB_CLIENT: AsyncOnce<tokio_postgres::Client> = AsyncOnce::new( async {
@@ -22,6 +23,8 @@ lazy_static! {
         tokio::spawn(async move {
             if let Err(e) = db_conn.await {
                 println!("connection error {}", e);
+            } else {
+                println!("Connection established to database");
             }
         });
 
@@ -30,20 +33,12 @@ lazy_static! {
 }
 
 pub async fn get_article_by_id(id: i32) -> tokio_postgres::Row {
+
     // Get a hold of the DB_CLIENT to make request
-    DB_CLIENT
-        .get()
-        .await
-        .query_one("SELECT path FROM blog_articles WHERE id=$1;", &[&id])
-        .await
-        .unwrap()
+    DB_CLIENT.get().await.query_one("SELECT * FROM blog_articles WHERE id=$1;", &[&id]).await.unwrap()
 }
 
 pub async fn get_all_articles() -> Vec<tokio_postgres::Row> {
-    DB_CLIENT
-        .get()
-        .await
-        .query("SELECT title, update_date, id FROM blog_articles;", &[])
-        .await
-        .unwrap()
+
+    DB_CLIENT.get().await.query("SELECT title, update_date, id FROM blog_articles;", &[]).await.unwrap()
 }
